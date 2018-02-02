@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
+
+import App from "./components/App";
+import "bootstrap/dist/css/bootstrap.css";
 import "./style.css";
 
-const Greeting = ({ name }) => <p className="greet">Hello, {name}!</p>;
-
-ReactDOM.render(<Greeting name="Vlad" />, document.getElementById("root"));
-
+ReactDOM.render(<App />, document.getElementById("root"));

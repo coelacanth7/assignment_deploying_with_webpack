@@ -4,8 +4,12 @@
 	"description": "Creating a React + Webpack app and deploying it to Heroku.",
 	"main": "index.js",
 	"dependencies": {
+		"bootstrap": "^4.0.0",
+		"isomorphic-fetch": "^2.2.1",
 		"react": "^16.2.0",
 		"react-dom": "^16.2.0",
+		"react-transition-group": "^1.2.0",
+		"reactstrap": "^4.8.0",
 		"webpack": "^3.6.0"
 	},
 	"devDependencies": {
@@ -26,15 +30,12 @@
 	},
 	"repository": {
 		"type": "git",
-		"url":
-			"git+https://github.com/coelacanth7/assignment_deploying_with_webpack.git"
+		"url": "git+https://github.com/coelacanth7/assignment_deploying_with_webpack.git"
 	},
 	"author": "",
 	"license": "ISC",
 	"bugs": {
-		"url":
-			"https://github.com/coelacanth7/assignment_deploying_with_webpack/issues"
+		"url": "https://github.com/coelacanth7/assignment_deploying_with_webpack/issues"
 	},
-	"homepage":
-		"https://github.com/coelacanth7/assignment_deploying_with_webpack#readme"
+	"homepage": "https://github.com/coelacanth7/assignment_deploying_with_webpack#readme"
 }
