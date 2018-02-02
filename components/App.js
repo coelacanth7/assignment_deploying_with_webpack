@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { Jumbotron, Container, FormGroup, Label, Input } from "reactstrap";
 import fetch from "isomorphic-fetch";
+
 import SearchResults from "./SearchResults";
 import Spinner from "./Spinner";
+import WeatherList from "./WeatherList";
+
 const baseUrl = "https://www.metaweather.com/api/location/";
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
@@ -16,6 +19,7 @@ class App extends Component {
 			isFetching: false
 		};
 		this.handleSearchKeyUp = this.handleSearchKeyUp.bind(this);
+		this.onClickSearchResult = this.onClickSearchResult.bind(this);
 	}
 
 	handleSearchKeyUp(e) {
@@ -27,6 +31,7 @@ class App extends Component {
 
 	onClickSearchResult(e, woeid) {
 		console.log(woeid);
+		this.fetchLocationQuery(woeid);
 	}
 
 	// componentDidMount() {
@@ -85,7 +90,34 @@ class App extends Component {
 			});
 	}
 
-	fetchLocation(woeid) {}
+	fetchLocationQuery(woeid) {
+		this.setState({ isFetching: true, searchResults: [] });
+		fetch(`${proxyurl}${baseUrl}location/${woeid}/`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`${response.status}: ${response.statusText}`);
+				}
+				return response.json();
+			})
+			.then(json => {
+				if (!Object.keys(json).length) {
+					this.setState({
+						noResultsMsg: "No results my dude",
+						isFetching: false
+					});
+				} else {
+					console.log("json response", json);
+					this.setState({
+						weather: json,
+						noResultsMsg: "",
+						isFetching: false
+					});
+				}
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	}
 
 	render() {
 		return (
@@ -113,6 +145,7 @@ class App extends Component {
 					searchResults={this.state.searchResults}
 					onClickSearchResult={this.onClickSearchResult}
 				/>
+				<WeatherList weather={this.state.weather} />
 			</div>
 		);
 	}
