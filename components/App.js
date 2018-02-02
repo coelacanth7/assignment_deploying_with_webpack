@@ -2,13 +2,19 @@ import React, { Component } from "react";
 import { Jumbotron, Container, FormGroup, Label, Input } from "reactstrap";
 import fetch from "isomorphic-fetch";
 import SearchResults from "./SearchResults";
+import Spinner from "./Spinner";
 const baseUrl = "https://www.metaweather.com/api/location/";
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
 class App extends Component {
 	constructor() {
 		super();
-		this.state = { weather: {}, searchResults: [], noResultsMsg: "" };
+		this.state = {
+			weather: {},
+			searchResults: [],
+			noResultsMsg: "",
+			isFetching: false
+		};
 		this.handleSearchKeyUp = this.handleSearchKeyUp.bind(this);
 	}
 
@@ -51,6 +57,7 @@ class App extends Component {
 	// }
 
 	fetchLocationsOnSearch(query) {
+		this.setState({ isFetching: true });
 		fetch(`${proxyurl}${baseUrl}search/?query=${query}`)
 			.then(response => {
 				if (!response.ok) {
@@ -60,10 +67,17 @@ class App extends Component {
 			})
 			.then(json => {
 				if (!json.length) {
-					this.setState({ noResultsMsg: "No results my dude" });
+					this.setState({
+						noResultsMsg: "No results my dude",
+						isFetching: false
+					});
 				} else {
 					console.log("json response", json);
-					this.setState({ searchResults: json, noResultsMsg: "" });
+					this.setState({
+						searchResults: json,
+						noResultsMsg: "",
+						isFetching: false
+					});
 				}
 			})
 			.catch(error => {
@@ -71,7 +85,7 @@ class App extends Component {
 			});
 	}
 
-  fetchLocation(woeid)
+	fetchLocation(woeid) {}
 
 	render() {
 		return (
@@ -94,6 +108,7 @@ class App extends Component {
 					/>
 				</FormGroup>
 				{this.state.noResultsMsg}
+				{this.state.isFetching ? <Spinner /> : ""}
 				<SearchResults
 					searchResults={this.state.searchResults}
 					onClickSearchResult={this.onClickSearchResult}
