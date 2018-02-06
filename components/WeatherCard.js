@@ -16,14 +16,34 @@ const WeatherCard = ({ info }) => {
 
 	return (
 		<div>
-			<div className="card">
-				<img className="card-img-top" src="..." alt="Card image cap" />
+			<div className="card" style={{ minWidth: "200px", maxWidth: "250px" }}>
+				<img
+					className="card-img-top"
+					src={`https://www.metaweather.com/static/img/weather/${
+						info.weather_state_abbr
+					}.svg`}
+					alt="Card image cap"
+				/>
 				<div className="card-body">
-					<h5 className="card-title">Card title</h5>
-					<p className="card-text">
-						Some quick example text to build on the card title and make up the
-						bulk of the card's content.
-					</p>
+					<h5 className="card-title">{info.weather_state_name}</h5>
+					<h5 className="card-title">{info.applicable_date}</h5>
+
+					<table className="table table-sm">
+						<thead>
+							<tr>
+								<th scope="col">Temp</th>
+								<th scope="col">Min</th>
+								<th scope="col">Max</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{Math.round(info.the_temp)}</td>
+								<td>{Math.round(info.min_temp)}</td>
+								<td>{Math.round(info.max_temp)}</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>

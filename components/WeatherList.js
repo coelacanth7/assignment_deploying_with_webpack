@@ -28,7 +28,7 @@ const WeatherList = props => {
 		<div>
 			<h1>{weather.title}</h1>
 			<h3>{weather.time}</h3>
-			<div>{weatherCards}</div>
+			<div className="card-group">{weatherCards}</div>
 		</div>
 	);
 };
