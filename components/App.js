@@ -62,7 +62,7 @@ class App extends Component {
 	// }
 
 	fetchLocationsOnSearch(query) {
-		this.setState({ isFetching: true });
+		this.setState({ isFetching: true, weather: {} });
 		fetch(`${proxyurl}${baseUrl}search/?query=${query}`)
 			.then(response => {
 				if (!response.ok) {
@@ -76,6 +76,8 @@ class App extends Component {
 						noResultsMsg: "No results my dude",
 						isFetching: false
 					});
+				} else if (json.length === 1) {
+					this.fetchLocationQuery(json[0].woeid);
 				} else {
 					console.log("json response", json);
 					this.setState({
