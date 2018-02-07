@@ -20,6 +20,11 @@ class App extends Component {
 		};
 		this.handleSearchKeyUp = this.handleSearchKeyUp.bind(this);
 		this.onClickSearchResult = this.onClickSearchResult.bind(this);
+		this.fetchLattLongLocation = this.fetchLattLongLocation.bind(this);
+	}
+
+	componentDidMount() {
+		this.fetchLocationOnLoad(this.fetchLattLongLocation);
 	}
 
 	handleSearchKeyUp(e) {
@@ -34,32 +39,54 @@ class App extends Component {
 		this.fetchLocationQuery(woeid);
 	}
 
-	// componentDidMount() {
-	// 	this.fetchLocationOnLoad();
-	// }
-	//
-	// fetchLocationOnLoad() {
-	// 	var options = {
-	// 		enableHighAccuracy: true,
-	// 		timeout: 5000,
-	// 		maximumAge: 0
-	// 	};
-	//
-	// 	function success(pos) {
-	// 		var crd = pos.coords;
-	//
-	// 		console.log("Your current position is:");
-	// 		console.log(`Latitude : ${crd.latitude}`);
-	// 		console.log(`Longitude: ${crd.longitude}`);
-	// 		console.log(`More or less ${crd.accuracy} meters.`);
-	// 	}
-	//
-	// 	function error(err) {
-	// 		console.warn(`ERROR(${err.code}): ${err.message}`);
-	// 	}
-	//
-	// 	navigator.geolocation.getCurrentPosition(success, error, options);
-	// }
+	fetchLocationOnLoad(apiCallback) {
+		var options = {
+			enableHighAccuracy: true,
+			timeout: 5000,
+			maximumAge: 0
+		};
+
+		function success(pos) {
+			var crd = pos.coords;
+
+			console.log("Your current position is:");
+			console.log(`Latitude : ${crd.latitude}`);
+			console.log(`Longitude: ${crd.longitude}`);
+			console.log(`More or less ${crd.accuracy} meters.`);
+
+			apiCallback(crd.latitude, crd.longitude);
+		}
+
+		function error(err) {
+			console.warn(`ERROR(${err.code}): ${err.message}`);
+		}
+
+		navigator.geolocation.getCurrentPosition(success, error, options);
+	}
+
+	fetchLattLongLocation(latt, long) {
+		this.setState({ isFetching: true });
+		fetch(`${proxyurl}${baseUrl}search/?lattlong=${latt},${long}`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`${response.status}: ${response.statusText}`);
+				}
+				return response.json();
+			})
+			.then(json => {
+				if (!json.length) {
+					this.setState({
+						noResultsMsg: "No results my dude",
+						isFetching: false
+					});
+				} else {
+					this.fetchLocationQuery(json[0].woeid);
+				}
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	}
 
 	fetchLocationsOnSearch(query) {
 		this.setState({ isFetching: true, weather: {} });
