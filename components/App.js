@@ -42,8 +42,8 @@ class App extends Component {
 	fetchLocationOnLoad(apiCallback) {
 		var options = {
 			enableHighAccuracy: true,
-			timeout: 5000,
-			maximumAge: 0
+			timeout: 27000,
+			maximumAge: 30000
 		};
 
 		function success(pos) {
