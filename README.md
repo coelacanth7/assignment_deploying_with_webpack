@@ -1,7 +1,9 @@
-# assignment_deploying_with_webpack
+# Webpack Deployment
 
 Creating a React + Webpack app and deploying it to Heroku.
 
 See a dinky little weather app here:
 
-https://git.heroku.com/powerful-depths-92051.git
+https://immense-cliffs-83851.herokuapp.com/
+
+This is just some practice to see how webpack acts with out a code generator such as create-react-app
